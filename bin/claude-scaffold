@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Creates a .claude/ scaffold in a repo directory.
+# Usage: claude-scaffold [repo-root]   (defaults to cwd git root)
+set -euo pipefail
+
+repo_root="${1:-$(git rev-parse --show-toplevel 2>/dev/null)}"
+repo_name="$(basename "$repo_root")"
+claude_dir="$repo_root/.claude"
+
+if [[ -d "$claude_dir" ]]; then
+    echo "[claude-scaffold] .claude/ already exists in $repo_root — skipping"
+    exit 0
+fi
+
+mkdir -p "$claude_dir/documents" "$claude_dir/commands"
+
+# Ignore everything inside .claude/ so it stays local and out of git
+printf '*\n' > "$claude_dir/.gitignore"
+
+cat > "$claude_dir/CLAUDE.md" << EOF
+# Project Context — ${repo_name}
+
+This is the project-level Claude Code context file for the **${repo_name}** repository.
+It is loaded automatically from \`.claude/CLAUDE.md\` at the start of every Claude Code
+session opened within this project.
+
+- **File:** \`${repo_root}/.claude/CLAUDE.md\`
+- **Repo:** \`${repo_name}\`
+- **Scope:** Local only — this file is gitignored and not committed to the repository.
+
+---
+
+## Formatting Rules
+
+<!-- Fill in project-specific conventions below. -->
+
+### Code Style
+
+### Commit Messages
+
+### Documentation
+
+---
+
+## .claude/ Directory
+
+This repository uses a \`.claude/\` directory for local Claude Code configuration.
+All contents are gitignored (\`.claude/.gitignore\` contains \`*\`) and stay local
+to this machine — nothing here is committed to the repository.
+
+| Path | Purpose |
+|---|---|
+| \`.claude/CLAUDE.md\` | This file — project context, auto-loaded by Claude Code |
+| \`.claude/settings.json\` | Claude Code permissions and hook configuration |
+| \`.claude/agents.md\` | Agent workflow definitions for this project |
+| \`.claude/documents/\` | Artifacts and documents created during Claude sessions |
+| \`.claude/commands/onboard.md\` | \`/onboard\` custom slash command |
+EOF
+
+printf '{\n  "permissions": {},\n  "hooks": {}\n}\n' > "$claude_dir/settings.json"
+
+printf '# Agent Workflows\n' > "$claude_dir/agents.md"
+
+printf '# /onboard\n' > "$claude_dir/commands/onboard.md"
+
+echo "[claude-scaffold] Created .claude/ in $repo_root"

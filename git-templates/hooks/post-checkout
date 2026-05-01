@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Scaffold .claude/ in ~/GitHub/ repos after git clone.
+# $3 == 1 means branch checkout (end of clone); 0 means file restore — skip that.
+[[ "${3:-0}" == "1" ]] || exit 0
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+[[ "$repo_root" == "$HOME/GitHub/"* ]] || exit 0
+
+"$HOME/.local/bin/claude-scaffold" "$repo_root"
