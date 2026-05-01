@@ -70,7 +70,7 @@ claude-scaffold /path/to/repo
 ## Fresh machine setup
 
 ```bash
-git clone https://github.com/TheShanachie/claude-dev-setup.git ~/GitHub/claude-dev-setup
+git clone git@github.com:TheShanachie/claude-dev-setup.git ~/GitHub/claude-dev-setup
 cd ~/GitHub/claude-dev-setup
 ./setup.sh
 ```
