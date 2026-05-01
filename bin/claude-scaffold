@@ -8,7 +8,7 @@ repo_name="$(basename "$repo_root")"
 claude_dir="$repo_root/.claude"
 
 if [[ -d "$claude_dir" ]]; then
-    echo "[claude-scaffold] .claude/ already exists in $repo_root — skipping"
+    echo "[claude-scaffold] .claude/ already exists in $repo_root -- skipping"
     exit 0
 fi
 
@@ -18,7 +18,7 @@ mkdir -p "$claude_dir/documents" "$claude_dir/commands"
 printf '*\n' > "$claude_dir/.gitignore"
 
 cat > "$claude_dir/CLAUDE.md" << EOF
-# Project Context — ${repo_name}
+# Project Context -- ${repo_name}
 
 This is the project-level Claude Code context file for the **${repo_name}** repository.
 It is loaded automatically from \`.claude/CLAUDE.md\` at the start of every Claude Code
@@ -26,7 +26,7 @@ session opened within this project.
 
 - **File:** \`${repo_root}/.claude/CLAUDE.md\`
 - **Repo:** \`${repo_name}\`
-- **Scope:** Local only — this file is gitignored and not committed to the repository.
+- **Scope:** Local only -- this file is gitignored and not committed to the repository.
 
 ---
 
@@ -36,7 +36,7 @@ session opened within this project.
 
 ### Code Style
 
-- Unless requested or permitted, do not write non-pure ASCII characters ([\x00-\x7F]).
+- Unless requested or permitted, do not write non-ASCII (Unicode) characters; prefer pure ASCII ([\x00-\x7F]) wherever possible.
 
 ### Commit Messages
 
@@ -48,11 +48,11 @@ session opened within this project.
 
 This repository uses a \`.claude/\` directory for local Claude Code configuration.
 All contents are gitignored (\`.claude/.gitignore\` contains \`*\`) and stay local
-to this machine — nothing here is committed to the repository.
+to this machine -- nothing here is committed to the repository.
 
 | Path | Purpose |
 |---|---|
-| \`.claude/CLAUDE.md\` | This file — project context, auto-loaded by Claude Code |
+| \`.claude/CLAUDE.md\` | This file -- project context, auto-loaded by Claude Code |
 | \`.claude/settings.json\` | Claude Code permissions and hook configuration |
 | \`.claude/agents.md\` | Agent workflow definitions for this project |
 | \`.claude/documents/\` | Artifacts and documents created during Claude sessions |

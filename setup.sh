@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotent setup script — run this on a fresh machine to reproduce the
+# Idempotent setup script -- run this on a fresh machine to reproduce the
 # full claude-scaffold git template configuration.
 set -euo pipefail
 
