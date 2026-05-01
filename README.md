@@ -1,15 +1,15 @@
 # claude-dev-setup
 
-Machine setup reference for `bengr`. Contains scripts and configuration
-for automatically scaffolding `.claude/` directories in every repo under
-`~/GitHub/`.
+Automatically scaffolds a local `.claude/` directory into every repo you
+clone or create, giving each project a ready-made Claude Code context file,
+settings, and custom commands — all gitignored so nothing is committed.
 
 ---
 
 ## What this sets up
 
-Every time you `git clone` or `git init` a repo inside `~/GitHub/`, a
-`.claude/` directory is created automatically:
+Every time you `git clone` or `git init` a repo inside `CLAUDE_REPOS_ROOT`
+(default: `~/GitHub/`), a `.claude/` directory is created automatically:
 
 ```
 .claude/
@@ -41,7 +41,7 @@ completes, git fires the `post-checkout` hook, which calls
 
 `post-checkout` does not fire on `git init` (no checkout happens). A
 `git()` wrapper function in `~/.bashrc` intercepts `git init` calls
-inside `~/GitHub/` and calls `claude-scaffold` after.
+inside `CLAUDE_REPOS_ROOT` and calls `claude-scaffold` after.
 
 ### `claude-scaffold` — the script
 
@@ -84,15 +84,19 @@ source ~/.bashrc
 
 ---
 
-## What was configured on this machine (2026-05-01)
+## Configuration
 
-| Setting | Value |
-|---|---|
-| `git config --global init.templateDir` | `~/.git-templates` |
-| `~/.local/bin/claude-scaffold` | installed + executable |
-| `~/.git-templates/hooks/post-checkout` | installed + executable |
-| `~/.bashrc` | `git()` wrapper appended |
+By default the scaffold only fires for repos inside `~/GitHub/`. To use a
+different root directory, export `CLAUDE_REPOS_ROOT` in your `~/.bashrc`
+**before** the `git()` wrapper block:
 
-Repos scaffolded at setup time:
-- `~/GitHub/rdk-thunder-inspect`
-- `~/GitHub/claude-dev-setup` (this repo)
+```bash
+export CLAUDE_REPOS_ROOT="$HOME/projects"
+```
+
+You can also run `claude-scaffold` manually on any existing repo at any time:
+
+```bash
+claude-scaffold              # uses current git repo
+claude-scaffold /path/to/repo
+```

@@ -36,6 +36,8 @@ session opened within this project.
 
 ### Code Style
 
+- Unless requested or permitted, do not write non-pure ASCII characters ([\x00-\x7F]).
+
 ### Commit Messages
 
 ### Documentation
