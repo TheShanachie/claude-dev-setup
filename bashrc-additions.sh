@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Paste this block into ~/.bashrc (or source this file from ~/.bashrc).
 # Wraps `git init` so that .claude/ is scaffolded automatically in any
 # repo created under CLAUDE_REPOS_ROOT (default: ~/GitHub/).
