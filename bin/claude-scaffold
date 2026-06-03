@@ -17,6 +17,12 @@ mkdir -p "$claude_dir/documents" "$claude_dir/commands"
 # Ignore everything inside .claude/ so it stays local and out of git
 printf '*\n' > "$claude_dir/.gitignore"
 
+# Add .claude/ to the root .gitignore if not already covered
+_root_gitignore="$repo_root/.gitignore"
+if ! grep -q '\.claude' "$_root_gitignore" 2>/dev/null; then
+    printf '\n# Ignore Local Claude Code Dir\n.claude/\n' >> "$_root_gitignore"
+fi
+
 cat > "$claude_dir/CLAUDE.md" << EOF
 # Project Context -- ${repo_name}
 

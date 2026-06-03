@@ -13,7 +13,7 @@ Every time you `git clone` or `git init` a repo inside `CLAUDE_REPOS_ROOT`
 
 ```
 .claude/
-|-- .gitignore        <- ignores all contents (stays local, never committed)
+|-- .gitignore        <- ignores all contents (belt-and-suspenders)
 |-- CLAUDE.md         <- project context loaded by Claude Code
 |-- settings.json     <- hooks and permissions for Claude Code
 |-- agents.md         <- agent workflow definitions
@@ -22,9 +22,17 @@ Every time you `git clone` or `git init` a repo inside `CLAUDE_REPOS_ROOT`
     \-- onboard.md    <- /onboard slash command
 ```
 
-The `.claude/` directory is intentionally **not committed**. The
-`.gitignore` inside it matches `*`, so git ignores all contents. This
-keeps project-level Claude context local to each developer.
+The `.claude/` directory is intentionally **not committed**. Two layers
+keep it out of git:
+
+1. The repo's root `.gitignore` gets a `.claude/` entry appended
+   automatically (skipped if `.claude` is already mentioned). This makes
+   the directory invisible to `git status` and `git add`.
+2. `.claude/.gitignore` contains `*` as a belt-and-suspenders fallback
+   in case the root entry is absent or overridden.
+
+If the repo has no root `.gitignore`, one is created. If it already
+mentions `.claude` in any form, the script leaves it alone.
 
 ---
 
@@ -70,8 +78,8 @@ claude-scaffold /path/to/repo
 ## Fresh machine setup
 
 ```bash
-git clone git@github.com:TheShanachie/claude-dev-setup.git ~/GitHub/claude-dev-setup
-cd ~/GitHub/claude-dev-setup
+git clone git@github.com:TheShanachie/claude-dev-setup.git ~/GitHub/TheShanachie/claude-dev-setup
+cd ~/GitHub/TheShanachie/claude-dev-setup
 ./setup.sh
 ```
 
