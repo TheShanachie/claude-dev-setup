@@ -36,17 +36,22 @@ session opened within this project.
 
 ---
 
-## Formatting Rules
-
-<!-- Fill in project-specific conventions below. -->
+## Rules
 
 ### Code Style
 
 - Unless requested or permitted, do not write non-ASCII (Unicode) characters; prefer pure ASCII ([\x00-\x7F]) wherever possible.
 
-### Commit Messages
+### Git Usage
 
-### Documentation
+- Do NOT write commit messages
+- Do NOT push code from any git repositories
+- Do NOT run any git commands
+- If git commands are necessary, provide suggested commnds to the user
+
+### AI Usage
+
+- Do NOT leave any comments, code, messages about the usage of AI
 
 ---
 
