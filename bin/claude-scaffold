@@ -4,8 +4,21 @@
 set -euo pipefail
 
 repo_root="${1:-$(git rev-parse --show-toplevel 2>/dev/null)}"
+if [[ -z "$repo_root" ]]; then
+    echo "[claude-scaffold] error: not inside a git repo and no path given" >&2
+    exit 1
+fi
 repo_name="$(basename "$repo_root")"
 claude_dir="$repo_root/.claude"
+
+# Add local tool dirs to the root .gitignore if not already covered (always runs)
+_root_gitignore="$repo_root/.gitignore"
+if ! grep -q '\.claude' "$_root_gitignore" 2>/dev/null; then
+    printf '\n# Ignore Local Claude Code Dir\n.claude/\n' >> "$_root_gitignore"
+fi
+if ! grep -q '\.vscode' "$_root_gitignore" 2>/dev/null; then
+    printf '\n# Ignore Local VS Code Dir\n.vscode/\n' >> "$_root_gitignore"
+fi
 
 if [[ -d "$claude_dir" ]]; then
     echo "[claude-scaffold] .claude/ already exists in $repo_root -- skipping"
@@ -16,12 +29,6 @@ mkdir -p "$claude_dir/documents" "$claude_dir/commands"
 
 # Ignore everything inside .claude/ so it stays local and out of git
 printf '*\n' > "$claude_dir/.gitignore"
-
-# Add .claude/ to the root .gitignore if not already covered
-_root_gitignore="$repo_root/.gitignore"
-if ! grep -q '\.claude' "$_root_gitignore" 2>/dev/null; then
-    printf '\n# Ignore Local Claude Code Dir\n.claude/\n' >> "$_root_gitignore"
-fi
 
 cat > "$claude_dir/CLAUDE.md" << EOF
 # Project Context -- ${repo_name}
@@ -47,7 +54,7 @@ session opened within this project.
 - Do NOT write commit messages
 - Do NOT push code from any git repositories
 - Do NOT run any git commands
-- If git commands are necessary, provide suggested commnds to the user
+- If git commands are necessary, provide suggested commands to the user
 
 ### AI Usage
 

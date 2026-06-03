@@ -1,2 +1,5 @@
 # Ignore Local Claude Code Dir
 .claude/
+
+# Ignore Local VS Code Dir
+.vscode/
